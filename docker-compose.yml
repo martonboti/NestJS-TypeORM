@@ -1,0 +1,48 @@
+version: "3.8"
+services:
+    pg:
+        container_name: pg
+        image: postgres:15.1
+        restart: always
+        environment:
+            POSTGRES_DB: carbon_certificate_db
+            POSTGRES_PASSWORD: password
+        ports:
+            - 5432:5432
+        volumes:
+            - docker-pg:/var/lib/postgresql/data
+        networks:
+            - carbon-certificate-network
+
+    carbon-certificate-api:
+        container_name: carbon-certificate-api
+        image: carbon-certificate-api:1.0.0
+        build:
+            dockerfile: Dockerfile
+            context: .
+            # Only will build development stage from our dockerfile
+            target: development
+        # Mount our host Directory to the docker container
+        # Mount (.) current directory to the docker container usr/src/app
+        # reflect file changes from host to container
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        # Run in dev Mode: npm run start:dev
+        command: npm run start:dev
+        depends_on:
+            - pg
+        environment:
+            NODE_ENV: development
+            APP_PORT: 8080
+            DB_API_URL: postgresql://root:password@pg:5432/carbon_certificate_db
+        ports:
+            - 8080:8080
+        networks:
+            - carbon-certificate-network
+
+networks:
+    carbon-certificate-network:
+
+volumes:
+    docker-pg:
