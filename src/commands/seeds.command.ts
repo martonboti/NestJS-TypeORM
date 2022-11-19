@@ -62,7 +62,9 @@ export class SeedsCommand extends CommandRunner {
         // Get random users and assign a certificate to each
         const randomUsers = users.sort(() => Math.random() - Math.random()).slice(0, this.assignNr);
         randomUsers.forEach((user) => {
-            this.assignUserToCertificate(certificates, user);
+            for (let i = 0; i < this.RNG(3, 10); i++) {
+                this.assignUserToCertificate(certificates, user);
+            }
         });
 
         const certEntities = this.carbonCertificateRepository.create(certificates);
@@ -88,4 +90,12 @@ export class SeedsCommand extends CommandRunner {
             this.assignUserToCertificate(certificates, user);
         }
     };
+
+    /**
+     * Random number generator between min/max values
+     * @param min - minimum value
+     * @param max - maximum value
+     * @return random number
+     */
+    private RNG = (min: number, max: number): number => Math.floor(Math.random() * (max - min) + min);
 }
