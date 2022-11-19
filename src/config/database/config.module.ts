@@ -13,7 +13,7 @@ import { DBConfigService } from './config.service';
         ConfigModule.forRoot({
             load: [config],
             validationSchema: Joi.object({
-                DB_API_URL: Joi.string().default('postgresql://root:password@pg:5432/carbon_certificate_db'),
+                DB_API_URL: Joi.string().default('postgresql://postgres:password@localhost:5432/carbon_certificate_db'),
             }),
         }),
     ],

@@ -1,27 +1,30 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AppConfigModule } from './config/app/config.module';
+import { AppConfigService } from './config/app/config.service';
+import { AuthModule } from './auth/auth.module';
+import { CarbonCertificatesModule } from './carbon-certificates/carbon-certificates.module';
 import { DBConfigModule } from './config/database/config.module';
 import { DBConfigService } from './config/database/config.service';
+import { UsersModule } from './users/users.module';
 
 @Module({
     imports: [
         AppConfigModule,
+        AuthModule,
+        CarbonCertificatesModule,
+        UsersModule,
         TypeOrmModule.forRootAsync({
-            imports: [DBConfigModule],
-            useFactory: (dbConfig: DBConfigService) => ({
+            imports: [DBConfigModule, AppConfigModule],
+            useFactory: (dbConfig: DBConfigService, appConfig: AppConfigService) => ({
                 type: 'postgres',
                 url: dbConfig.dbApiUrl,
                 ssl: false,
-                synchronize: false,
+                synchronize: appConfig.env !== 'production',
                 entities: ['dist/**/*.api.entity{.ts,.js}'],
             }),
-            inject: [DBConfigService],
+            inject: [DBConfigService, AppConfigService],
         }),
     ],
-    controllers: [AppController],
-    providers: [AppService],
 })
 export class AppModule {}

@@ -35,7 +35,7 @@ services:
         environment:
             NODE_ENV: development
             APP_PORT: 8080
-            DB_API_URL: postgresql://root:password@pg:5432/carbon_certificate_db
+            DB_API_URL: postgresql://postgres:password@pg:5432/carbon_certificate_db
         ports:
             - 8080:8080
         networks:
