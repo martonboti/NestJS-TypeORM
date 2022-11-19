@@ -16,4 +16,10 @@ export class CarbonCertificate extends Node {
 
     @Column({ type: 'uuid', nullable: true })
     owner: string;
+
+    public static of(params: Partial<CarbonCertificate>): CarbonCertificate {
+        const carbonCertificate = new CarbonCertificate();
+        Object.assign(carbonCertificate, params);
+        return carbonCertificate;
+    }
 }

@@ -21,4 +21,10 @@ export class User extends Node {
     hashPassword() {
         this.password = bcrypt.hashSync(this.password, 10);
     }
+
+    public static of(params: Partial<User>): User {
+        const user = new User();
+        Object.assign(user, params);
+        return user;
+    }
 }
