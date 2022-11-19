@@ -14,6 +14,11 @@ npm run seeds:run
 npm run test:cov
 ```
 
+#### Local Swagger docs
+```
+http://localhost:8080/api/v1/api-docs
+```
+
 #### Tech/libraries used:
 - #### [NestJS](https://docs.nestjs.com)
 - #### [PostgreSQL](https://www.postgresql.org)
