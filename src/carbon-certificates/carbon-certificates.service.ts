@@ -19,15 +19,6 @@ export class CarbonCertificatesService {
     ) {}
 
     /**
-     * Finds one certificate by id
-     * @param id carbon certificate UUID
-     * @returns carbon certificate object
-     */
-    async findOne(id: string): Promise<CarbonCertificate> {
-        return await this.carbonCertificateRepository.findOneBy({ id });
-    }
-
-    /**
      * Return list of available carbon certificates
      * @returns array of carbon certificates
      */
