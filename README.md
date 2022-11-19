@@ -1,3 +1,30 @@
+## Carbon certificates REST API
+
+#### Build the API in docker:
+```
+npm i
+docker-compose up
+```
+#### Database seed
+```
+npm run seeds:run
+```
+#### Run the tests
+```
+npm run test:cov
+```
+
+#### Tech/libraries used:
+- #### [NestJS](https://docs.nestjs.com)
+- #### [PostgreSQL](https://www.postgresql.org)
+- #### [TypeORM](https://typeorm.io)
+- #### [NestJS Commander](https://www.npmjs.com/package/nest-commander)
+- #### [Jest](https://jestjs.io)
+- #### [Swagger](https://swagger.io)
+- #### [class-validator](https://github.com/typestack/class-validator)
+
+---
+
 ![Agreena](https://agreena.com/wp-content/uploads/2021/06/agreena-logo.svg)
 
 # NodeJS recruitment test task
