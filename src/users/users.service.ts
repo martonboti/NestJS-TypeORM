@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.api.entity';
+import { UserPayload } from './payload/user.payload';
 
 @Injectable()
 export class UsersService {
@@ -29,5 +30,25 @@ export class UsersService {
      */
     async findByEmail(email: string): Promise<User> {
         return await this.usersRepository.findOneBy({ email });
+    }
+
+    /**
+     * Get all users
+     * @returns user object
+     */
+    async getUsers(): Promise<UserPayload[]> {
+        return await this.usersRepository.find({
+            select: {
+                id: true,
+                firstname: true,
+                lastname: true,
+                email: true,
+                certificates: {
+                    id: true,
+                    country: true,
+                },
+            },
+            relations: ['certificates'],
+        });
     }
 }

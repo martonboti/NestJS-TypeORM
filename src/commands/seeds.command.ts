@@ -15,7 +15,7 @@ import { UserType } from '../users/types/user.type';
 export class SeedsCommand extends CommandRunner {
     private readonly logger = new Logger(SeedsCommand.name);
     private userNr = 10;
-    private certNr = 200;
+    private certNr = 100;
     private assignNr = 5;
 
     constructor(
@@ -28,9 +28,10 @@ export class SeedsCommand extends CommandRunner {
     }
 
     async run(): Promise<void> {
-        // Seed users table
-        await this.usersRepository.clear();
+        await this.carbonCertificateRepository.query('DELETE FROM carbon_certificates');
+        await this.usersRepository.query('DELETE FROM users');
 
+        // Seed users table
         const users = <UserType[]>[];
         for (let i = 0; i < this.userNr; i++) {
             const email = faker.internet.email();
@@ -48,11 +49,10 @@ export class SeedsCommand extends CommandRunner {
         await this.usersRepository.insert(userEntities);
 
         // Seed carbon certificates table
-        await this.carbonCertificateRepository.clear();
-
         const certificates = <CarbonCertificate[]>[];
         for (let i = 0; i < this.certNr; i++) {
             certificates.push({
+                id: uuidv4(),
                 country: faker.address.country(),
                 status: Status.AVAILABLE,
                 owner: null,

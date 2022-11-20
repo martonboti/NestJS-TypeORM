@@ -1,6 +1,7 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { Node } from '../../common/entities/node.entity';
 import { Status } from '../enums/status.enum';
+import { User } from '../../users/entities/user.api.entity';
 
 @Entity('carbon_certificates')
 export class CarbonCertificate extends Node {
@@ -16,6 +17,10 @@ export class CarbonCertificate extends Node {
 
     @Column({ type: 'uuid', nullable: true })
     owner: string;
+
+    @ManyToOne(() => User, (user) => user.certificates)
+    @JoinColumn({ name: 'owner' })
+    user?: User;
 
     public static of(params: Partial<CarbonCertificate>): CarbonCertificate {
         const carbonCertificate = new CarbonCertificate();

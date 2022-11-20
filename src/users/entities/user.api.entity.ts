@@ -1,6 +1,7 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany } from 'typeorm';
 import bcrypt from 'bcrypt';
 import { Node } from '../../common/entities/node.entity';
+import { CarbonCertificate } from '../../carbon-certificates/entities/carbon-certificate.api.entity';
 
 @Entity('users')
 export class User extends Node {
@@ -21,6 +22,9 @@ export class User extends Node {
     hashPassword() {
         this.password = bcrypt.hashSync(this.password, 10);
     }
+
+    @OneToMany(() => CarbonCertificate, (certificate) => certificate.user)
+    certificates?: CarbonCertificate[];
 
     public static of(params: Partial<User>): User {
         const user = new User();

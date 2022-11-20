@@ -71,4 +71,27 @@ describe('UsersService', () => {
             expect(userRepositoryFindOneBySpy).toHaveBeenCalledWith({ email });
         });
     });
+
+    describe('getUsers() test', () => {
+        it('returns list of users', async () => {
+            const users = <User[]>[];
+            for (let i = 0; i < 4; i++) {
+                users.push(
+                    User.of({
+                        id: faker.datatype.uuid(),
+                        firstname: faker.name.firstName(),
+                        lastname: faker.name.lastName(),
+                        email: faker.internet.email(),
+                        certificates: [],
+                    }),
+                );
+            }
+
+            jest.spyOn(usersRepository, 'find').mockResolvedValue(users);
+
+            const result = await service.getUsers();
+
+            expect(result).toBe(users);
+        });
+    });
 });
