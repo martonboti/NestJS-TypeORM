@@ -48,6 +48,10 @@ export class CarbonCertificatesService {
      */
     async transferCertificate(userId: string, body: TransferDto): Promise<TransferPayload> {
         try {
+            if (userId === body.userId) {
+                throw new HttpException("You can't transfer this certificate to yourself.", HttpStatus.BAD_REQUEST);
+            }
+
             const [certificate, user] = await Promise.all([
                 this.carbonCertificateRepository.findOne({
                     where: { owner: userId, id: body.carbonCertificateId },
